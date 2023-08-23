@@ -6,7 +6,7 @@ import colors from '../assets/colors'
 import LandComponent from '../Components/Myland Screen Components/LandComponent'
 
 export default function MyLandScreen() {
-    const navigate = useNavigation()
+    const navigation = useNavigation()
     const [isButtonVisible, setIsButtonVisible] = useState(true);
 
 const toggleButtonVisibility = () => {
@@ -46,9 +46,9 @@ const toggleButtonVisibility = () => {
         {isButtonVisible && (
             
             <TouchableOpacity style={styles.button} 
-            // onPress={()=>{
-            //     toggleButtonVisibility(),navigation.navigate("Create")
-            // }}
+            onPress={()=>{
+                toggleButtonVisibility(),navigation.navigate("Add")
+            }}
             >
             <View style={{height:50,width:50,borderRadius:50,justifyContent:"center",alignItems:"center",backgroundColor:colors.profit}}>
     

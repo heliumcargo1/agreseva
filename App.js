@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -9,6 +9,8 @@ import MarketPriceScreen from './Screens/MarketPriceScreen';
 import AgriStoreScreen from './Screens/AgriStoreScreen';
 import FarmDetailsScreen from './Screens/FarmDetailsScreen';
 import CameraScreen from './Screens/CameraScreen';
+import AddLand from './Screens/AddLand';
+// import ImageUploadComponent from './Screens/ImageUploadComponent';
 
 // import {UserContext} from './Main';
 
@@ -30,9 +32,11 @@ const App = () => {
           <Stack.Screen name="Store" component={AgriStoreScreen} />
           <Stack.Screen name="Farm" component={FarmDetailsScreen} />
           <Stack.Screen name="Camera" component={CameraScreen} />
+          <Stack.Screen name="Add" component={AddLand} />
+          {/* <Stack.Screen name="Test" component={ImageUploadComponent} /> */}
         </Stack.Navigator>
       </NavigationContainer>
-    
+      // <ImageUploadComponent />
   );
 };
 
