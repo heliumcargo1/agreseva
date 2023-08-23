@@ -3,6 +3,7 @@ import React from 'react'
 import GlobalHeader from '../Components/GlobalComponents/GlobalHeader'
 import Courosel from '../Components/HomeScreen Components/Courosel'
 import SectionsOptions from '../Components/HomeScreen Components/SectionsOptions'
+import colors from '../assets/colors'
 const HomeScreen = () => {
   return (
     <View style={styles.mainContainer}>
@@ -18,6 +19,7 @@ export default HomeScreen
 const styles = StyleSheet.create({
     mainContainer:{
         flex:1,
-        alignItems:"center"
+        alignItems:"center",
+        backgroundColor:colors.primary
     },
 })

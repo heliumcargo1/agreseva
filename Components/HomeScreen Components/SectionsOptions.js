@@ -2,16 +2,22 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 import colors from '../../assets/colors'
+import { useNavigation } from '@react-navigation/native'
 
 const SectionsOptions = () => {
+    const navigation = useNavigation()
   return (
     <View style={styles.mainContainer}>
         <View style={styles.innerContainer}>
-            <TouchableOpacity style={styles.leftContainer}>
+            <TouchableOpacity style={styles.leftContainer} onPress={()=>{
+                navigation.navigate("Land")
+            }}>
                 <Image source={require('../../assets/icons/land.png')} style={{height:"50%",width:"50%",resizeMode:"contain"}}/>
-                <Text style={styles.textStyles}>My Land</Text>
+                <Text style={styles.textStyles}>My Farm</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.leftContainer}>
+            <TouchableOpacity style={styles.leftContainer} onPress={()=>{
+                navigation.navigate("Education")}}
+            >
             <Image source={require('../../assets/icons/training.png')} style={{height:"50%",width:"50%",resizeMode:"contain"}}/>
 
             <Text style={styles.textStyles}>Education</Text>
@@ -19,15 +25,17 @@ const SectionsOptions = () => {
             </TouchableOpacity>
         </View>
         <View style={styles.innerContainer}>
-        <TouchableOpacity style={styles.leftContainer}>
-        <Image source={require('../../assets/icons/community.png')} style={{height:"50%",width:"50%",resizeMode:"contain"}}/>
+        <TouchableOpacity style={styles.leftContainer} onPress={()=>{
+                navigation.navigate("Market")}}>
+        <Image source={require('../../assets/icons/price.png')} style={{height:"50%",width:"50%",resizeMode:"contain"}}/>
 
-             <Text style={styles.textStyles}>Community</Text>      
+             <Text style={styles.textStyles}>Market Prices</Text>      
         </TouchableOpacity>
-            <TouchableOpacity style={styles.leftContainer}>
+            <TouchableOpacity style={styles.leftContainer} onPress={()=>{
+                navigation.navigate("Store")}}>
             <Image source={require('../../assets/icons/market.png')} style={{height:"50%",width:"50%",resizeMode:"contain"}}/>
 
-            <Text style={styles.textStyles}>Market</Text>
+            <Text style={styles.textStyles}>Agri Store</Text>
 
             </TouchableOpacity>
         </View>

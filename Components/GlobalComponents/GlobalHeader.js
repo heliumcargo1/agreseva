@@ -3,15 +3,19 @@ import React from 'react'
 
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 import colors from '../../assets/colors'
+import { useNavigation } from '@react-navigation/native'
 
-const GlobalHeader = () => {
+const GlobalHeader = ({title,route}) => {
+    const navigation = useNavigation()
   return (
     <View style={styles.mainContainer}>
-        <TouchableOpacity style={styles.leftContainer}>
+        <TouchableOpacity style={styles.leftContainer} onPress={()=>{
+            navigation.navigate(route)
+        }} >
             <Image source={require('../../assets/icons/back.png')} style={{height:"60%",width:"60%",resizeMode:"contain"}}/>
         </TouchableOpacity>
         <View style={styles.middleContainer}>
-            <Text style={styles.textStyles}>Hey User</Text>
+            <Text style={styles.textStyles}>{title}</Text>
         </View>
     </View>
   )
@@ -42,7 +46,8 @@ const styles = StyleSheet.create({
         justifyContent:"center"
     },
     textStyles:{
-        fontSize:16,
-        color:colors.text
+        fontSize:18,
+        color:colors.text,
+        fontWeight:"700"
     }
 })
