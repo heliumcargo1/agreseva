@@ -15,9 +15,16 @@ import { base64 } from 'base64-js';
 // import RNFS from 'react-native-fs';
 
 
-const FarmDetailsScreen = () => {
+const FarmDetailsScreen = (props) => {
+  console.log("Props",props.route.params)
+  let name = props.route.params.name
+  let area = props.route.params.area
+  let cropName = props.route.params.cropName
+  let location = props.route.params.location
+  console.log("location",location?.coordinates)
     const navigation = useNavigation()
   	const [modal,setModal] = useState(false)
+    const [mlResponse,setMLResponse] = useState()
     const devices = useCameraDevices()
     const camera = useRef(null)
   const device = devices.back
@@ -51,6 +58,9 @@ const newMicrophonePermission = await Camera.requestMicrophonePermission()
         })
         console.log("Image: ",data._parts)
         console.log("Paaath: ",photo.path)
+        console.log("Sending Image to ML model.")
+        console.log("asdfghjk",imageData);
+        mlProcess(photo.path)
     
         
       }
@@ -58,40 +68,39 @@ const newMicrophonePermission = await Camera.requestMicrophonePermission()
     function closeModal() {
       setModal(false);
     }
-    
 
-    const fetchData = async () => {
-      console.log("calling ML")
-      try {
-        const imageUri = camphoto.path; // Update with the actual path
-        const response = await fetch(imageUri);
-        const imageBlob = await response.blob();
 
-        const reader = new FileReader();
-        reader.onload = async () => {
-          const imgDataArrayBuffer =  reader.result;
-          const imgDataUint8Array =   new Uint8Array(imgDataArrayBuffer);
-
-          const imgBase64 = base64.fromByteArray(imgDataUint8Array);
-
-          const url = 'https://susya.onrender.com';
-          const requestOptions = {
+    const mlProcess = async (selectedImage) => {
+      if (selectedImage) {
+  
+        const formData = new FormData();
+        formData.append('image', {
+          uri: 'file://'+selectedImage,
+          type: 'image/jpeg',
+          name: 'image.jpg',
+        });
+  
+        try {
+          const response = await fetch('http://172.16.51.46:3001/upload', {
             method: 'POST',
+            body: formData,
             headers: {
-              'Content-Type': 'application/json',
+              'Content-Type': 'multipart/form-data',
             },
-            body: JSON.stringify({ image: imgBase64 }),
-          };
-
-          const r = await fetch(url, requestOptions);
-          const responseText = await r.text();
-
-          console.log("rrrrrrrrrr",responseText.trim());
-        };
-
-        reader.readAsArrayBuffer(imageBlob);
-      } catch (error) {
-        console.error('Error:', error);
+          });
+          console.log("Updated Uri: ", formData.uri)
+          console.log(response)
+  
+          // if (!response.ok) {
+          //   throw new Error('Network response was not ok');
+          // }
+  
+          const responseData = await response.json();
+          console.log('Upload successful:', responseData);
+          setMLResponse(responseData)
+        } catch (error) {
+          console.error('Error uploading image:', error);
+        }
       }
     };
 
@@ -117,8 +126,7 @@ const newMicrophonePermission = await Camera.requestMicrophonePermission()
                     {imageData !== '' && <Image source={{uri:'file://'+imageData}} style={{width:"90%",height:"80%"}}/>}
                     <TouchableOpacity style={{height:"8%",width:"40%",backgroundColor:colors.profit,borderRadius:10,justifyContent:"center",alignItems:"center"}}>
                       <Text style={{color:"black",fontSize:18,fontWeight:"700"}} onPress={()=>{
-                        closeModal(),
-                        fetchData()
+                        closeModal()
                       }}>Submit</Text>
                     </TouchableOpacity>
 
@@ -144,9 +152,9 @@ const newMicrophonePermission = await Camera.requestMicrophonePermission()
           onPress={()=>{
             setTakePhotoClicked(true)
           }}></TouchableOpacity> */}
-          <GlobalHeader navigation={navigation} route={"Land"} title={"Land Details"}/>
-<WeatherArea />
-<FarmDetails/>
+          <GlobalHeader navigation={navigation} route={"Land"} title={"Farm Details"}/>
+<WeatherArea location={location}/>
+<FarmDetails name={name} area={area} cropName={cropName} location={location} mlResponse={mlResponse}/>
 <DetechCorp setTakePhotoClicked={setTakePhotoClicked}/> 
         </View>
        )}

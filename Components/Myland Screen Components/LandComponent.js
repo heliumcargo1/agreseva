@@ -4,17 +4,27 @@ import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimen
 import colors from '../../assets/colors';
 import { useNavigation } from '@react-navigation/native';
 
-const LandComponent = () => {
+const LandComponent = (props) => {
+  console.log(props)
+  let area = props.area
+  let name = props.name
+  let cropName = props.cropName
+  let location = props.location
     const navigation = useNavigation()
   return (
-    <TouchableOpacity style={styles.mainContainer} onPress={()=>{navigation.navigate("Farm")}}>
+    <TouchableOpacity style={styles.mainContainer} onPress={()=>{navigation.navigate("Farm",{
+      area:area,
+      name:name,
+      cropName:cropName,
+      location:location
+    })}}>
       <View style={styles.imageContainer}>
         <ImageBackground
           source={require('../../assets/icons/farmbg.jpg')}
           style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
         >
           <View style={styles.innerContainer}>
-            <Text style={styles.textStyles}>Farm Name</Text>
+            <Text style={styles.textStyles}>{name}</Text>
           </View>
         </ImageBackground>
       </View>

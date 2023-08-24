@@ -2,16 +2,18 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View,ScrollView, Image }
 import React, { useState } from 'react'
 import {responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions'
 import axios from 'axios'
-import GetLocation from 'react-native-get-location'
 import Modal from 'react-native-modal'; 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import colors from '../assets/colors'
 import GlobalHeader from '../Components/GlobalComponents/GlobalHeader'
+import GetLocation from 'react-native-get-location'
+import { useNavigation } from '@react-navigation/native';
 
 
 
 
 const AddLand = () => {
+    const navigation = useNavigation()
     const [modal,setModal] = useState(false)
     const [landName,setLandAName] = useState()
     const [area,setArea] = useState()
@@ -48,15 +50,47 @@ const AddLand = () => {
             }
         })
         console.log("Response",response); 
+        navigation.navigate("Land")
         }catch(err){
-            console.error("Error storing land: ",err)
+            console.log("Error storing land: ",err)
         }
     }
+    // const addLand = async () => {
+    //     console.log(landName, area, cropName, latitude, longitude);
+    //     try {
+    //         const response = await fetch("http://172.16.52.58:3000/land/create", {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 name: landName,
+    //                 area,
+    //                 cropName,
+    //                 location: {
+    //                     type: "Point",
+    //                     coordinates: [latitude, longitude]
+    //                 }
+    //             })
+    //         });
+    
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+    
+    //         const data = await response.json();
+    //         console.log("Response", data);
+    //     } catch (err) {
+    //         console.error("Error storing land: ", err);
+    //     }
+    // }
+    
     const toggleModal = () =>{
         setModal(!modal)
     }
     const storeCropName = (arg)=>{
         setCropName(arg)
+        setModal(false)
     }
   return (
     <>
@@ -218,7 +252,7 @@ const AddLand = () => {
                 />
             </View>
             <View style={[styles.textContainer,{justifyContent:"space-between"}]}>
-                <Text style={styles.textStyles1}>Crop</Text>
+                <Text style={styles.textStyles1}>{ cropName? cropName:"Crop"}</Text>
                 <TouchableOpacity style={[styles.dropDownContainer,]}
                     onPress={toggleModal}
                 >
@@ -226,13 +260,15 @@ const AddLand = () => {
 
                 </TouchableOpacity>
             </View>
-            <View style={[styles.textContainer,{justifyContent:"space-between"}]}>
+            {/* <View style={[styles.textContainer,{justifyContent:"space-between"}]}>
                 <Text style={styles.textStyles1}>Get Location</Text>
         
-                <TouchableOpacity style={[styles.dropDownContainer,]} onPress={getLocation}>
+                <TouchableOpacity style={[styles.dropDownContainer,]} onPress={()=>{
+                    getLocation()
+                }}>
                     <Image source={require('../assets/icons/down.png')} style={{height:"70%",width:"70%",resizeMode:"contain"}}/>
                 </TouchableOpacity>
-            </View>
+            </View> */}
             
         </View>
         <TouchableOpacity style={styles.innerContainer3} onPress={addLand}>
